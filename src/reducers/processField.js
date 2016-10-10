@@ -1,5 +1,4 @@
-const processField = (state = {Form1:{},Form2:{}}, action) => {
-  console.log('reducer', action)
+const processField = (state = {Form1:{name:'',enableCustom:false},Form2:{}}, action) => {
   switch (action.type) {
     case 'ADD_PROCESS_FIELD':
       let key = action.id
@@ -18,6 +17,21 @@ const processField = (state = {Form1:{},Form2:{}}, action) => {
         default:
           return state
       }
+    case 'UPDATE_PROCESS_FIELDS':
+    switch (action.formStep){
+      case 1:
+        return {
+          ...state,
+          Form1: action.formFields
+        }
+      case 2:
+        return {
+          ...state,
+          Form2: action.formFields
+        }
+      default:
+        return state
+    }
     default:
       return state
   }

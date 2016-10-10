@@ -1,14 +1,14 @@
 // libs
 import React, { Component } from 'react';
-import {find} from 'lodash';
+import { find, forEach } from 'lodash'
 
 // Material-UI Components
 import TextField from 'material-ui/TextField';
+import Toggle from 'material-ui/Toggle';
 
 // Components
 import SelectFieldWrapper from '../general/SelectFieldWrapper';
 import InputWrapper from '../general/InputWrapper';
-import ToggleContainer from '../../containers/ToggleContainer';
 
 // Data
 import templates from '../../data/templates';
@@ -28,53 +28,38 @@ const styles = {
 class AddProcess1 extends Component {
   constructor(props){
     super(props)
-    this.state = {
-      customize: false,
-      currentTemplate: '',
-      templateDefined: {
-        loadType: this.props.initialValues.loadType,
-        controlType: this.props.initialValues.controlType,
-        controlMethod: this.props.initialValues.controlMethod,
-      },
+    this.state ={
+      settings: this.props.initialValues,
     }
-    this.handleChange = this.handleChange.bind(this);
-    this.handleToggle = this.handleToggle.bind(this);
-    this.setTemplateDefinedStates = this.setTemplateDefinedStates.bind(this);
+    this.handleChange = this.handleChange.bind(this)
+    this.checkTemplate = this.checkTemplate.bind(this)
   }
 
-  componentWillMount(){
-    let {initialValues} = this.props;
-    if(initialValues.template){
-      this.setTemplateDefinedStates(initialValues.template)
-    }
-  }
-
-  setTemplateDefinedStates(templateName){
-    let templateObject = find(templates, {'name':templateName});
-    if(templateObject){
-      this.setState({templateDefined: {
-        loadType: templateObject.defaultSettings.loadType,
-        controlType: templateObject.defaultSettings.controlType,
-        controlMethod: templateObject.defaultSettings.controlMethod,
-      }});
-    }
+  checkTemplate(templateName) {
+      let newState = this.state.settings
+      if(templateName === 'Custom'){
+        newState.enableCustom = true;
+        this.setState({settings: newState})
+      }else{
+        let template = find(templates, {'name': templateName}).defaultSettings
+        forEach(template, (value, key) => {
+          newState[key] = value
+        })
+        this.setState({settings: newState})
+      }
   }
 
   handleChange(event, value, id) {
-    this.props.onChange(id,value,1);
-  }
-
-  handleToggle(){
-    if(this.state.currentTemplate === 'Custom'){
-      return
-    }
-    this.setState({customize: !this.state.customize});
+    let newState = this.state.settings
+    newState[id] = value;
+    this.setState({settings: newState})
+    if(id === 'template') {this.checkTemplate(value)}
   }
 
   render() {
     // Generate Template Names
       let templateNames = templates.map((template) => {return template.name});
-    templateNames.unshift('Custom');
+      templateNames.unshift('Custom');
     // Generate Device Names
       let deviceNames = setupSettings.devices.map((device) => {return device.name});
     // Generate Sensor Names
@@ -86,13 +71,13 @@ class AddProcess1 extends Component {
     // Generate Control Method Names
       let controlMethodNames = setupSettings.controlMethods.map((controlMethod) => {return controlMethod.name});
 
-      let {initialValues} = this.props;
+      let {settings} = this.state
     return(
       <div className="select-boxes" style={styles.templateSelect}>
         <InputWrapper
           id="name"
           onChange={this.handleChange}
-          initialValue={initialValues.name}>
+          initialValue={settings.name}>
           <TextField
             hintText='Make your name memorable'
             floatingLabelText="Name"
@@ -102,7 +87,7 @@ class AddProcess1 extends Component {
         <SelectFieldWrapper
           id="template"
           floatingLabelText="Template"
-          initialValue={initialValues.template}
+          initialValue={settings.template}
           values={templateNames}
           texts={templateNames}
           handleChange={this.handleChange}
@@ -110,7 +95,7 @@ class AddProcess1 extends Component {
         <SelectFieldWrapper
           id="device"
           floatingLabelText="Select a Device"
-          initialValue={initialValues.device}
+          initialValue={settings.device}
           values={deviceNames}
           texts={deviceNames}
           handleChange={this.handleChange}
@@ -118,39 +103,47 @@ class AddProcess1 extends Component {
         <SelectFieldWrapper
           id="sensor"
           floatingLabelText="Select a Sensor"
-          initialValue={initialValues.sensor}
+          initialValue={settings.sensor}
           values={sensorNames}
           texts={sensorNames}
           handleChange={this.handleChange}
         />
-      <ToggleContainer />
+        <InputWrapper
+          id="enableCustom"
+          onChange={this.handleChange}
+          initialValue={settings.enableCustom}>
+          <Toggle
+            label="Customize"
+            labelPosition="right"
+          />
+        </InputWrapper>
 
 
         <SelectFieldWrapper
           id="loadType"
           floatingLabelText="Type of Load"
-          initialValue={initialValues.loadType}
+          initialValue={settings.loadType}
           values={loadTypeNames}
           texts={loadTypeNames}
-          disabled={!this.state.customize}
+          disabled={!settings.enableCustom}
           handleChange={this.handleChange}
         />
         <SelectFieldWrapper
           id="controlType"
           floatingLabelText="Type of Control"
-          initialValue={initialValues.controlType}
+          initialValue={settings.controlType}
           values={controlTypeNames}
           texts={controlTypeNames}
-          disabled={!this.state.customize}
+          disabled={!settings.enableCustom}
           handleChange={this.handleChange}
         />
         <SelectFieldWrapper
           id="controlMethod"
           floatingLabelText="Control Method"
-          initialValue={initialValues.controlMethod}
+          initialValue={settings.controlMethod}
           values={controlMethodNames}
           texts={controlMethodNames}
-          disabled={!this.state.customize}
+          disabled={!settings.enableCustom}
           handleChange={this.handleChange}
         />
       </div>

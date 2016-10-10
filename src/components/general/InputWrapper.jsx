@@ -13,10 +13,16 @@ class InputWrapper extends Component {
     this.renderChildProps = this.renderChildProps.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({value: nextProps.initialValue})
+  }
+
   renderChildProps(props){
     return React.Children.map(props.children, child => {
       if(child.type.name === "TextField"){
         return React.cloneElement(child, {onChange: this.handleChange, value: this.state.value})
+      }else if (child.type.name === "Toggle"){
+        return React.cloneElement(child, {onToggle: this.handleChange, toggled: this.state.value})
       }else{
         return child;
       }
@@ -42,7 +48,6 @@ class InputWrapper extends Component {
 InputWrapper.propTypes = {
   onChange: React.PropTypes.func,
   id: React.PropTypes.string,
-  initialValue: React.PropTypes.string,
 }
 
 export default InputWrapper;

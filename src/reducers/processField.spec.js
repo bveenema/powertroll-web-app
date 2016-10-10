@@ -1,7 +1,7 @@
 import processField from './processField'
 
 describe('processField reducer', () => {
-  let initialState = {ProcessAddForm_1:{},ProcessAddForm_2:{}}
+  let initialState = {Form1:{name:'',enableCustom:false},Form2:{}}
   it('should handle initial state', () => {
     expect(
       processField(undefined, {})
@@ -18,13 +18,13 @@ describe('processField reducer', () => {
       })
     ).toEqual({
       ...initialState,
-      ProcessAddForm_1: {id:'My Process'}
+      Form1: {...initialState.Form1,id:'My Process'}
     })
   })
 
   let prefilledState = {
-    ProcessAddForm_1:{Dog: "Poodle"},
-    ProcessAddForm_2:{Cat: "Krumpit"}
+    Form1:{Dog: "Poodle"},
+    Form2:{Cat: "Krumpit"}
   }
   it('should ADD_PROCESS_FIELD with filled array', () => {
     expect(
@@ -36,7 +36,23 @@ describe('processField reducer', () => {
       })
     ).toEqual({
       ...prefilledState,
-      ProcessAddForm_1:{Dog: "Poodle",id: "My Process"}
+      Form1:{Dog: "Poodle",id: "My Process"}
     })
   })
+
+  it('should handle UPDATE_PROCESS_FIELDS', () => {
+    expect(
+      processField(initialState, {
+        type: 'UPDATE_PROCESS_FIELDS',
+        formStep: 1,
+        formFields: prefilledState.Form1,
+      })
+    ).toEqual({
+      ...initialState,
+      Form1: prefilledState.Form1,
+    })
+  })
+
+
+
 })

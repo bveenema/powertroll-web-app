@@ -16,7 +16,6 @@ export const toggleTodo = (id) => ({
 })
 
 export const toggleCustomProcess = (isToggled) => {
-  console.log('action', isToggled)
   return ({
     type: 'TOGGLE_CUSTOM_PROCESS',
     toggled: !isToggled,
@@ -24,11 +23,18 @@ export const toggleCustomProcess = (isToggled) => {
 }
 
 export const addProcessField = (id, value, formStep) => {
-  console.log('action', id, value, formStep)
   return ({
     type: 'ADD_PROCESS_FIELD',
     formStep,
     id,
     value,
+  })
+}
+
+export const updateProcessFields = (formFields, formStep) => {
+  return ({
+    type: 'UPDATE_PROCESS_FIELDS',
+    formStep,
+    formFields,
   })
 }
