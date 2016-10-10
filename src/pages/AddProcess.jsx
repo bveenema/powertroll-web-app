@@ -14,7 +14,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 
 // Components
-import AddProcess1 from '../components/addProcess/AddProcess1';
+import AddProcess1Container from '../containers/AddProcess1Container';
 import AddProcess2 from '../components/addProcess/AddProcess2';
 
 
@@ -85,7 +85,7 @@ class AddProcess extends Component {
   getStepContent(stepIndex) {
     switch (stepIndex) {
       case 0:
-        return (<AddProcess1 initalValues={this.processInfo} onChange={this.handleStepData}/>);
+        return (<AddProcess1Container />);
       case 1:
         return (<AddProcess2 />);
       default:

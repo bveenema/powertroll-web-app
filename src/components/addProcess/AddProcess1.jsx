@@ -4,11 +4,11 @@ import {find} from 'lodash';
 
 // Material-UI Components
 import TextField from 'material-ui/TextField';
-import Toggle from 'material-ui/Toggle';
 
 // Components
 import SelectFieldWrapper from '../general/SelectFieldWrapper';
 import InputWrapper from '../general/InputWrapper';
+import ToggleContainer from '../../containers/ToggleContainer';
 
 // Data
 import templates from '../../data/templates';
@@ -32,9 +32,9 @@ class AddProcess1 extends Component {
       customize: false,
       currentTemplate: '',
       templateDefined: {
-        loadType: this.props.initalValues.loadType,
-        controlType: this.props.initalValues.controlType,
-        controlMethod: this.props.initalValues.controlMethod,
+        loadType: this.props.initialValues.loadType,
+        controlType: this.props.initialValues.controlType,
+        controlMethod: this.props.initialValues.controlMethod,
       },
     }
     this.handleChange = this.handleChange.bind(this);
@@ -43,9 +43,9 @@ class AddProcess1 extends Component {
   }
 
   componentWillMount(){
-    let {initalValues} = this.props;
-    if(initalValues.template){
-      this.setTemplateDefinedStates(initalValues.template)
+    let {initialValues} = this.props;
+    if(initialValues.template){
+      this.setTemplateDefinedStates(initialValues.template)
     }
   }
 
@@ -61,15 +61,7 @@ class AddProcess1 extends Component {
   }
 
   handleChange(event, value, id) {
-    if(id === 'template'){
-      this.setState({currentTemplate: value});
-      if(value === 'Custom'){
-        this.setState({customize: true})
-      }else{
-        this.setTemplateDefinedStates(value);
-      }
-    }
-    this.props.onChange({value,id});
+    this.props.onChange(id,value,1);
   }
 
   handleToggle(){
@@ -94,13 +86,13 @@ class AddProcess1 extends Component {
     // Generate Control Method Names
       let controlMethodNames = setupSettings.controlMethods.map((controlMethod) => {return controlMethod.name});
 
-      let {initalValues} = this.props;
+      let {initialValues} = this.props;
     return(
       <div className="select-boxes" style={styles.templateSelect}>
         <InputWrapper
           id="name"
           onChange={this.handleChange}
-          initialValue={initalValues.name}>
+          initialValue={initialValues.name}>
           <TextField
             hintText='Make your name memorable'
             floatingLabelText="Name"
@@ -110,7 +102,7 @@ class AddProcess1 extends Component {
         <SelectFieldWrapper
           id="template"
           floatingLabelText="Template"
-          initialValue={initalValues.template}
+          initialValue={initialValues.template}
           values={templateNames}
           texts={templateNames}
           handleChange={this.handleChange}
@@ -118,7 +110,7 @@ class AddProcess1 extends Component {
         <SelectFieldWrapper
           id="device"
           floatingLabelText="Select a Device"
-          initialValue={initalValues.device}
+          initialValue={initialValues.device}
           values={deviceNames}
           texts={deviceNames}
           handleChange={this.handleChange}
@@ -126,24 +118,18 @@ class AddProcess1 extends Component {
         <SelectFieldWrapper
           id="sensor"
           floatingLabelText="Select a Sensor"
-          initialValue={initalValues.sensor}
+          initialValue={initialValues.sensor}
           values={sensorNames}
           texts={sensorNames}
           handleChange={this.handleChange}
         />
-        <Toggle
-          className="pure-u-1-3"
-          label="Customize"
-          labelPosition="right"
-          toggled={this.state.customize}
-          onToggle={this.handleToggle}
-        />
+      <ToggleContainer />
 
 
         <SelectFieldWrapper
           id="loadType"
           floatingLabelText="Type of Load"
-          initialValue={this.state.templateDefined.loadType}
+          initialValue={initialValues.loadType}
           values={loadTypeNames}
           texts={loadTypeNames}
           disabled={!this.state.customize}
@@ -152,7 +138,7 @@ class AddProcess1 extends Component {
         <SelectFieldWrapper
           id="controlType"
           floatingLabelText="Type of Control"
-          initialValue={this.state.templateDefined.controlType}
+          initialValue={initialValues.controlType}
           values={controlTypeNames}
           texts={controlTypeNames}
           disabled={!this.state.customize}
@@ -161,7 +147,7 @@ class AddProcess1 extends Component {
         <SelectFieldWrapper
           id="controlMethod"
           floatingLabelText="Control Method"
-          initialValue={this.state.templateDefined.controlMethod}
+          initialValue={initialValues.controlMethod}
           values={controlMethodNames}
           texts={controlMethodNames}
           disabled={!this.state.customize}
