@@ -35,6 +35,10 @@ class AddProcess1 extends Component {
     this.checkTemplate = this.checkTemplate.bind(this)
   }
 
+  componentWillUnmount() {
+    this.props.updateStore(this.state.settings, 1)
+  }
+
   checkTemplate(templateName) {
       let newState = this.state.settings
       if(templateName === 'Custom'){
