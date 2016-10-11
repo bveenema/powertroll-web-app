@@ -2,13 +2,11 @@
 import React, { Component } from 'react';
 import { find, forEach } from 'lodash'
 
-// Material-UI Components
-import TextField from 'material-ui/TextField';
-import Toggle from 'material-ui/Toggle';
-
-// Components
-import SelectFieldWrapper from '../general/SelectFieldWrapper';
-import InputWrapper from '../general/InputWrapper';
+//Components
+import Formsy from 'formsy-react';
+import MenuItem from 'material-ui/MenuItem';
+import { FormsyCheckbox, FormsyDate, FormsyRadio, FormsyRadioGroup,
+    FormsySelect, FormsyText, FormsyTime, FormsyToggle } from 'formsy-material-ui/lib';
 
 // Data
 import templates from '../../data/templates';
@@ -49,12 +47,17 @@ class AddProcess1 extends Component {
       }
   }
 
-  handleChange(event, value, id) {
-    let newState = this.state.settings
-    newState[id] = value;
-    this.setState({settings: newState})
-    if(id === 'template') {this.checkTemplate(value)}
+  handleChange(formValues, isChanged) {
+    console.log('formValues', formValues)
+    this.setState({settings: formValues})
   }
+
+  // handleChange(event, value, id) {
+  //   let newState = this.state.settings
+  //   newState[id] = value;
+  //   this.setState({settings: newState})
+  //   if(id === 'template') {this.checkTemplate(value)}
+  // }
 
   render() {
     // Generate Template Names
@@ -71,27 +74,42 @@ class AddProcess1 extends Component {
     // Generate Control Method Names
       let controlMethodNames = setupSettings.controlMethods.map((controlMethod) => {return controlMethod.name});
 
+      console.log('newState', this.state.settings)
       let {settings} = this.state
     return(
       <div className="select-boxes" style={styles.templateSelect}>
-        <InputWrapper
-          id="name"
+        <Formsy.Form
           onChange={this.handleChange}
-          initialValue={settings.name}>
-          <TextField
-            hintText='Make your name memorable'
-            floatingLabelText="Name"
-            fullWidth={true}
+        >
+          <FormsyText
+            name="name"
+            validations="isAlphanumeric"
+            validationError="Only letters and numbers please"
+            required
+            hintText="Make your name memorable"
+            floatingLabelText="Name*"
+            value={settings.name}
           />
-        </InputWrapper>
-        <SelectFieldWrapper
-          id="template"
-          floatingLabelText="Template"
-          initialValue={settings.template}
-          values={templateNames}
-          texts={templateNames}
-          handleChange={this.handleChange}
-        />
+          <FormsySelect
+            name="template"
+            floatingLabelText="Template"
+            initialValue='never'
+          >
+            <MenuItem value={'never'} primaryText="Never" />
+            <MenuItem value={'nightly'} primaryText="Every Night" />
+            <MenuItem value={'weeknights'} primaryText="Weeknights" />
+          </FormsySelect>
+
+          <FormsyToggle
+            name="enableCustom"
+            label="Customize"
+            value={settings.enableCustom}
+          />
+
+        </Formsy.Form>
+
+        {/*
+          
         <SelectFieldWrapper
           id="device"
           floatingLabelText="Select a Device"
@@ -145,7 +163,7 @@ class AddProcess1 extends Component {
           texts={controlMethodNames}
           disabled={!settings.enableCustom}
           handleChange={this.handleChange}
-        />
+        /> */}
       </div>
     )
   }
