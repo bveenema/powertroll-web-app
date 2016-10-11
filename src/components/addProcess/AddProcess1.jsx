@@ -2,13 +2,10 @@
 import React, { Component } from 'react';
 import { find, forEach } from 'lodash'
 
-// Material-UI Components
-import TextField from 'material-ui/TextField';
-import Toggle from 'material-ui/Toggle';
-
-// Components
-import SelectFieldWrapper from '../general/SelectFieldWrapper';
-import InputWrapper from '../general/InputWrapper';
+//Components
+import Formsy from 'formsy-react';
+import MenuItem from 'material-ui/MenuItem';
+import { FormsySelect, FormsyText, FormsyToggle } from 'formsy-material-ui/lib';
 
 // Data
 import templates from '../../data/templates';
@@ -21,6 +18,7 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     flexWrap: 'wrap',
+    width: '100%',
   }
 }
 
@@ -40,6 +38,7 @@ class AddProcess1 extends Component {
   }
 
   checkTemplate(templateName) {
+    if(templateName){
       let newState = this.state.settings
       if(templateName === 'Custom'){
         newState.enableCustom = true;
@@ -51,106 +50,105 @@ class AddProcess1 extends Component {
         })
         this.setState({settings: newState})
       }
+    }
   }
 
-  handleChange(event, value, id) {
-    let newState = this.state.settings
-    newState[id] = value;
-    this.setState({settings: newState})
-    if(id === 'template') {this.checkTemplate(value)}
+  handleChange(formValues, isChanged) {
+    if(isChanged){this.setState({settings: formValues})}
+    this.checkTemplate(formValues.template)
   }
 
   render() {
-    // Generate Template Names
+    // Generate Template MenuItems
       let templateNames = templates.map((template) => {return template.name});
       templateNames.unshift('Custom');
-    // Generate Device Names
-      let deviceNames = setupSettings.devices.map((device) => {return device.name});
-    // Generate Sensor Names
-      let sensorNames = setupSettings.sensors.map((sensor) => {return sensor.name});
-    // Generate Load Type Names
-      let loadTypeNames = setupSettings.loadTypes.map((loadType) => {return loadType.name});
-    // Generate Control Type Names
-      let controlTypeNames = setupSettings.controlTypes.map((controlType) => {return controlType.name});
-    // Generate Control Method Names
-      let controlMethodNames = setupSettings.controlMethods.map((controlMethod) => {return controlMethod.name});
+      let templateItems = templateNames.map((name, index) => {return (<MenuItem value={name} primaryText={name} key={index}/>)})
+    // Generate Device MenuItems
+      let deviceItems = setupSettings.devices.map((device, index) => {return (<MenuItem value={device.name} primaryText={device.name} key={index}/>)});
+    // Generate Sensor Items
+      let sensorItems = setupSettings.sensors.map((sensor, index) => {return (<MenuItem value={sensor.name} primaryText={sensor.name} key={index}/>)});
+    // Generate Load Type Items
+      let loadTypeItems = setupSettings.loadTypes.map((loadType, index) => {return (<MenuItem value={loadType.name} primaryText={loadType.name} key={index}/>)});
+    // Generate Control Type Items
+      let controlTypeItems = setupSettings.controlTypes.map((controlType, index) => {return (<MenuItem value={controlType.name} primaryText={controlType.name} key={index}/>)});
+    // Generate Control Method Items
+      let controlMethodItems = setupSettings.controlMethods.map((controlMethod, index) => {return (<MenuItem value={controlMethod.name} primaryText={controlMethod.name} key={index}/>)});
 
       let {settings} = this.state
     return(
-      <div className="select-boxes" style={styles.templateSelect}>
-        <InputWrapper
-          id="name"
-          onChange={this.handleChange}
-          initialValue={settings.name}>
-          <TextField
-            hintText='Make your name memorable'
-            floatingLabelText="Name"
+
+      <Formsy.Form
+        onChange={this.handleChange}
+      >
+        <div className="select-boxes" style={styles.templateSelect}>
+          <FormsyText
+            name="name"
+            validations="isAlphanumeric"
+            validationError="Only letters and numbers please"
+            required
+            hintText="Make your name memorable"
+            floatingLabelText="Name*"
+            value={settings.name}
             fullWidth={true}
           />
-        </InputWrapper>
-        <SelectFieldWrapper
-          id="template"
-          floatingLabelText="Template"
-          initialValue={settings.template}
-          values={templateNames}
-          texts={templateNames}
-          handleChange={this.handleChange}
-        />
-        <SelectFieldWrapper
-          id="device"
-          floatingLabelText="Select a Device"
-          initialValue={settings.device}
-          values={deviceNames}
-          texts={deviceNames}
-          handleChange={this.handleChange}
-        />
-        <SelectFieldWrapper
-          id="sensor"
-          floatingLabelText="Select a Sensor"
-          initialValue={settings.sensor}
-          values={sensorNames}
-          texts={sensorNames}
-          handleChange={this.handleChange}
-        />
-        <InputWrapper
-          id="enableCustom"
-          onChange={this.handleChange}
-          initialValue={settings.enableCustom}>
-          <Toggle
+          <FormsySelect
+            name="template"
+            floatingLabelText="Template"
+            value={settings.template}
+          >
+            {templateItems}
+          </FormsySelect>
+          <FormsySelect
+            name="device"
+            floatingLabelText="Device"
+            value={settings.device}
+          >
+            {deviceItems}
+          </FormsySelect>
+          <FormsySelect
+            name="sensor"
+            floatingLabelText="Sensor"
+            value={settings.sensor}
+          >
+            {sensorItems}
+          </FormsySelect>
+
+          <FormsyToggle
+            name="enableCustom"
             label="Customize"
-            labelPosition="right"
+            value={settings.enableCustom}
           />
-        </InputWrapper>
+          <div hidden={!settings.enableCustom} style={styles.templateSelect}>
+            <FormsySelect
+              disabled={!settings.enableCustom}
+              name="loadType"
+              floatingLabelText="Load Type"
+              value={settings.loadType}
+            >
+              {loadTypeItems}
+            </FormsySelect>
+            <FormsySelect
+              disabled={!settings.enableCustom}
+              name="controlType"
+              floatingLabelText="Control Type"
+              value={settings.controlType}
+            >
+              {controlTypeItems}
+            </FormsySelect>
+            <FormsySelect
+              disabled={!settings.enableCustom}
+              name="controlMethod"
+              floatingLabelText="Control Method"
+              value={settings.controlMethod}
+            >
+              {controlMethodItems}
+            </FormsySelect>
+          </div>
+        </div>
+      </Formsy.Form>
 
 
-        <SelectFieldWrapper
-          id="loadType"
-          floatingLabelText="Type of Load"
-          initialValue={settings.loadType}
-          values={loadTypeNames}
-          texts={loadTypeNames}
-          disabled={!settings.enableCustom}
-          handleChange={this.handleChange}
-        />
-        <SelectFieldWrapper
-          id="controlType"
-          floatingLabelText="Type of Control"
-          initialValue={settings.controlType}
-          values={controlTypeNames}
-          texts={controlTypeNames}
-          disabled={!settings.enableCustom}
-          handleChange={this.handleChange}
-        />
-        <SelectFieldWrapper
-          id="controlMethod"
-          floatingLabelText="Control Method"
-          initialValue={settings.controlMethod}
-          values={controlMethodNames}
-          texts={controlMethodNames}
-          disabled={!settings.enableCustom}
-          handleChange={this.handleChange}
-        />
-      </div>
+
     )
   }
 }
