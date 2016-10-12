@@ -1,12 +1,10 @@
 // libs
 import React, {Component} from 'react';
 
-// Material UI Components
-import TextField from 'material-ui/TextField';
-import Toggle from 'material-ui/Toggle'
-
-// Components
-import SelectFieldWrapper from '../general/SelectFieldWrapper';
+//Components
+import Formsy from 'formsy-react';
+import MenuItem from 'material-ui/MenuItem';
+import { FormsySelect, FormsyText, FormsyToggle } from 'formsy-material-ui/lib';
 
 // Styles
 const styles = {
@@ -21,77 +19,106 @@ class SetpointSetter extends Component {
   constructor(props){
     super(props);
     this.state = {
-      setpoint: null,
-      toleranceEnabled: false,
-      toleranceType: 'Symmetric',
-      tolerancePlus: null,
-      toleranceMinus: null,
-      durationEnabled: false,
-      duration: null, // forever
-      durationType: 'Seconds',
+      settings: {}
     }
-    this.handleToleranceToggle = this.handleToleranceToggle.bind(this);
-    this.handleDurationToggle = this.handleDurationToggle.bind(this);
-
+    this.handleChange = this.handleChange.bind(this)
+    // setpoint: null,
+    // toleranceEnabled: false,
+    // toleranceType: 'Symmetric',
+    // tolerancePlus: null,
+    // toleranceMinus: null,
+    // durationEnabled: false,
+    // duration: null, // forever
+    // durationType: 'Seconds',
   }
 
-  handleDurationToggle() {
-    this.setState({durationEnabled: !this.state.durationEnabled});
+  componentWillUnmount() {
+    //this.props.updateStore(this.state.settings)
   }
 
-  handleToleranceToggle() {
-    this.setState({toleranceEnabled: !this.state.toleranceEnabled})
+  handleChange(formValues, isChanged) {
+    console.log('formValue', formValues)
+    if(isChanged){this.setState({settings: formValues}, ()=>{
+      console.log('newState', this.state.settings)
+    })}
   }
 
   render() {
+    let { settings } = this.state
+
     return (
-      <div>
-        <TextField
+      <Formsy.Form
+        onChange={this.handleChange}
+      >
+        <FormsyText
+          name="setpoint"
+          validations="isNumeric"
+          validationError="Only numbers please"
+          required
           hintText={this.props.unit}
-          floatingLabelText="Setpoint"
+          floatingLabelText="Setpoint*"
+          value={settings.setpoint}
           fullWidth={true}
         />
         <div>
-          <Toggle
+          <FormsyToggle
+            name="toleranceEnabled"
             label="Tolerance"
-            toggled={this.state.toleranceEnabled}
-            onToggle={this.handleToleranceToggle}/>
-          <div style={styles.row} hidden={!this.state.toleranceEnabled}>
-            <TextField
+            value={settings.toleranceEnabled}
+          />
+        <div style={styles.row} hidden={!settings.toleranceEnabled}>
+            <FormsyText
               style={{flex: '0 1 35%', marginRight: '5%'}}
-              hintText={this.state.toleranceType}
-              floatingLabelText="Tolerance"
+              name="tolerancePlus"
+              validations="isNumeric"
+              validationError="Only numbers please"
+              required
+              floatingLabelText={(settings.toleranceType === 'symmetric') ? "Tolerance" : "Positive Tolerance"}
+              value={settings.tolerancePlus}
             />
-            <SelectFieldWrapper
+            <FormsySelect
               style={{flex: '0 1 55%'}}
-              id="toleranceType"
-              floatingLabelText="Type"
-              values={['Symmetric', 'Limit']}
-              texts={['Symmetric', 'Limit']}
-            />
+              disabled={!settings.toleranceEnabled}
+              name="toleranceType"
+              floatingLabelText="Tolerance Type"
+              value={settings.toleranceType}
+            >
+              <MenuItem value='symmetric' primaryText='Symmetric' />
+              <MenuItem value='limit' primaryText='Limit' />
+            </FormsySelect>
           </div>
         </div>
         <div>
-          <Toggle
+          <FormsyToggle
+            name="durationEnabled"
             label="Duration"
-            toggled={this.state.durationEnabled}
-            onToggle={this.handleDurationToggle}/>
-          <div style={styles.row} hidden={!this.state.durationEnabled}>
-            <TextField
+            value={settings.durationEnabled}
+          />
+        <div style={styles.row} hidden={!settings.durationEnabled}>
+            <FormsyText
               style={{flex: '0 1 35%', marginRight: '5%'}}
-              hintText={this.state.durationType}
+              name="duration"
+              validations="isNumeric"
+              validationError="Only numbers please"
+              required
               floatingLabelText="Time"
+              value={settings.duration}
             />
-            <SelectFieldWrapper
-              initialValue={this.state.durationType}
+            <FormsySelect
               style={{flex: '0 1 55%'}}
-              id="durationType"
-              values={['Seconds', 'Minutes', 'Hours', 'Days']}
-              texts={['Seconds', 'Minutes', 'Hours', 'Days']}
-            />
+              disabled={!settings.durationEnabled}
+              name="durationType"
+              floatingLabelText="Duration Type"
+              value={settings.durationType}
+            >
+              <MenuItem value='seconds' primaryText='Seconds' />
+              <MenuItem value='minutes' primaryText='Minutes' />
+              <MenuItem value='hours' primaryText='Hours' />
+              <MenuItem value='days' primaryText='Days' />
+            </FormsySelect>
           </div>
         </div>
-      </div>
+      </Formsy.Form>
     )
   }
 }

@@ -8,6 +8,7 @@ export const addProcessField = (id, value, formStep) => {
 }
 
 export const updateProcessFields = (formFields, formStep) => {
+  console.log('action',formFields)
   return ({
     type: 'UPDATE_PROCESS_FIELDS',
     formStep,

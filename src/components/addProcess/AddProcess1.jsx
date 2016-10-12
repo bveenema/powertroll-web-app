@@ -28,34 +28,40 @@ class AddProcess1 extends Component {
     super(props)
     this.state ={
       settings: this.props.initialValues,
+      animal: 'cat',
     }
     this.handleChange = this.handleChange.bind(this)
     this.checkTemplate = this.checkTemplate.bind(this)
   }
 
   componentWillUnmount() {
-    this.props.updateStore(this.state.settings, 1)
+    this.props.updateStore(this.state.settings)
   }
 
-  checkTemplate(templateName) {
+  checkTemplate(state, templateName) {
     if(templateName){
-      let newState = this.state.settings
+      let newState = state
       if(templateName === 'Custom'){
         newState.enableCustom = true;
-        this.setState({settings: newState})
       }else{
         let template = find(templates, {'name': templateName}).defaultSettings
         forEach(template, (value, key) => {
           newState[key] = value
         })
-        this.setState({settings: newState})
       }
+      return newState
     }
+    return state
+  }
+
+  shouldComponentRender() {
+    console.log('Should Component Render')
   }
 
   handleChange(formValues, isChanged) {
-    if(isChanged){this.setState({settings: formValues})}
-    this.checkTemplate(formValues.template)
+    if(!isChanged) {return}
+    let newState = this.checkTemplate(formValues,formValues.template)
+    this.setState({settings: newState})
   }
 
   render() {
@@ -74,7 +80,10 @@ class AddProcess1 extends Component {
     // Generate Control Method Items
       let controlMethodItems = setupSettings.controlMethods.map((controlMethod, index) => {return (<MenuItem value={controlMethod.name} primaryText={controlMethod.name} key={index}/>)});
 
+
       let {settings} = this.state
+
+
     return(
 
       <Formsy.Form
