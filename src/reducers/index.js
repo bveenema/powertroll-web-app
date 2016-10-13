@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
 import processField from './processField'
 
-const todoApp = combineReducers({
+const powertrollApp = combineReducers({
   processField,
 })
 
-export default todoApp
+export default powertrollApp

@@ -21,26 +21,31 @@ const setupSettings = {
       _id: 1,
       name: 'Captain Greybeard',
       type: 'temperature',
+      unit: 'F',
     },
     {
       _id: 2,
       name: 'McSwitchy',
       type: 'boolean',
+      unit: 'on/off',
     },
     {
       _id: 3,
       name: 'Panama Joe',
       type: 'humidity',
+      unit: '%RH',
     },
     {
       _id: 4,
       name: 'South Wall Thermometer',
       type: 'thermometer',
+      unit: 'F',
     },
     {
       _id: 5,
       name: 'South Wall Humidity',
       type: 'humidity',
+      unit: '%RH',
     },
   ],
   loadTypes: [

@@ -22,25 +22,15 @@ class SetpointSetter extends Component {
       settings: {}
     }
     this.handleChange = this.handleChange.bind(this)
-    // setpoint: null,
-    // toleranceEnabled: false,
-    // toleranceType: 'Symmetric',
-    // tolerancePlus: null,
-    // toleranceMinus: null,
-    // durationEnabled: false,
-    // duration: null, // forever
-    // durationType: 'Seconds',
   }
 
   componentWillUnmount() {
-    //this.props.updateStore(this.state.settings)
+    this.props.updateStore(this.state.settings)
   }
 
   handleChange(formValues, isChanged) {
-    console.log('formValue', formValues)
-    if(isChanged){this.setState({settings: formValues}, ()=>{
-      console.log('newState', this.state.settings)
-    })}
+    if(!isChanged) return
+    this.setState({settings: formValues})
   }
 
   render() {
@@ -124,6 +114,7 @@ class SetpointSetter extends Component {
 }
 
 SetpointSetter.propTypes = {
+  initialValues: React.PropTypes.string,
   unit: React.PropTypes.string,
 }
 

@@ -2,12 +2,12 @@
 import React from 'react';
 
 // Components
-import SetpointSetter from './SetpointSetter';
+import SetpointSetterContainer from '../../containers/SetpointSetterContainer';
 
 const AddProcess2 = (props) => {
   return (
     <div className="add-process-2">
-      <SetpointSetter />
+      <SetpointSetterContainer />
     </div>
 
   );
