@@ -54,10 +54,6 @@ class AddProcess1 extends Component {
     return state
   }
 
-  shouldComponentRender() {
-    console.log('Should Component Render')
-  }
-
   handleChange(formValues, isChanged) {
     if(!isChanged) {return}
     let newState = this.checkTemplate(formValues,formValues.template)
@@ -80,12 +76,8 @@ class AddProcess1 extends Component {
     // Generate Control Method Items
       let controlMethodItems = setupSettings.controlMethods.map((controlMethod, index) => {return (<MenuItem value={controlMethod.name} primaryText={controlMethod.name} key={index}/>)});
 
-
       let {settings} = this.state
-
-
     return(
-
       <Formsy.Form
         onChange={this.handleChange}
       >

@@ -5,12 +5,27 @@ import React from 'react';
 import SetpointSetterContainer from '../../containers/SetpointSetterContainer';
 
 const AddProcess2 = (props) => {
+  let modules = props.modules.map((module) => {
+    switch (module) {
+      case 'SetpointSetter':
+        return <SetpointSetterContainer />
+      default:
+        return null
+      }
+  })
   return (
     <div className="add-process-2">
-      <SetpointSetterContainer />
+      {modules}
     </div>
-
   );
 };
+
+AddProcess2.propTypes = {
+  modules: React.PropTypes.array,
+}
+
+AddProcess2.defaultProps = {
+  modules: ['SetpointSetter'],
+}
 
 export default AddProcess2;
