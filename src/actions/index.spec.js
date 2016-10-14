@@ -15,3 +15,22 @@ describe('updateProcessFields', () => {
     })
   })
 })
+
+describe('updateFormValidity', ()=> {
+  it('should create UPDATE_FORM_VALIDITY action', ()=> {
+    expect(actions.updateFormValidity('setpointSetter',true)).toEqual({
+      type: 'UPDATE_FORM_VALIDITY',
+      formName: 'setpointSetter',
+      isValid: true,
+    })
+  })
+})
+
+describe('updateAddProcessStep', ()=> {
+  it('should create UPDATE_ADD_PROCESS_STEP action', ()=> {
+    expect(actions.updateAddProcessStep(1)).toEqual({
+      type: 'UPDATE_ADD_PROCESS_STEP',
+      newStep: 1,
+    })
+  })
+})

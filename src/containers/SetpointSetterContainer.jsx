@@ -10,7 +10,6 @@ const mapStateToProps = (state) => {
   let sensor = find(setupSettings.sensors, {'name':state.processField.Form1.sensor})
   let unit = sensor.unit
   let type = sensor.type
-  debugger
   return {
     initialValues: state.processField.setpointSetter,
     unit: unit,
@@ -20,7 +19,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateStore: (formFields) => dispatch(updateProcessFields(formFields,'setpoinSetter'))
+    updateStore: (formFields) => dispatch(updateProcessFields(formFields,'setpointSetter'))
   }
 }
 

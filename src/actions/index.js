@@ -8,10 +8,26 @@ export const addProcessField = (id, value, formStep) => {
 }
 
 export const updateProcessFields = (formFields, formStep) => {
-  console.log('action',formFields)
   return ({
     type: 'UPDATE_PROCESS_FIELDS',
     formStep,
     formFields,
+  })
+}
+
+export const updateFormValidity = (formName, isValid) => {
+  console.log('action UPDATE_FORM_VALIDITY',formName,isValid)
+  return({
+    type: 'UPDATE_FORM_VALIDITY',
+    formName,
+    isValid
+  })
+}
+
+export const updateAddProcessStep = (newStep) => {
+  console.log('action UPDATE ADD PROCESS STEP', newStep)
+  return({
+    type: 'UPDATE_ADD_PROCESS_STEP',
+    newStep
   })
 }

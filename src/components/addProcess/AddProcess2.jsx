@@ -5,10 +5,10 @@ import React from 'react';
 import SetpointSetterContainer from '../../containers/SetpointSetterContainer';
 
 const AddProcess2 = (props) => {
-  let modules = props.modules.map((module) => {
+  let modules = props.modules.map((module,index) => {
     switch (module) {
       case 'SetpointSetter':
-        return <SetpointSetterContainer />
+        return <SetpointSetterContainer key={index}/>
       default:
         return null
       }

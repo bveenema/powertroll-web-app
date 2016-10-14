@@ -19,9 +19,12 @@ class SetpointSetter extends Component {
   constructor(props){
     super(props);
     this.state = {
-      settings: {}
+      settings: props.initialValues,
     }
+    this.isValid = false
     this.handleChange = this.handleChange.bind(this)
+    this.handleValid = this.handleValid.bind(this)
+    this.handleInvalid = this.handleInvalid.bind(this)
   }
 
   componentWillUnmount() {
@@ -33,12 +36,24 @@ class SetpointSetter extends Component {
     this.setState({settings: formValues})
   }
 
+  handleValid() {
+    if(this.isValid) return
+    this.isValid=true
+  }
+
+  handleInvalid() {
+    if(!this.isValid) return
+    this.isValid=false
+  }
+
   render() {
     let { settings } = this.state
 
     return (
       <Formsy.Form
         onChange={this.handleChange}
+        onValid={this.handleValid}
+        onInvalid={this.handleInvalid}
       >
         <FormsyText
           name="setpoint"
@@ -62,13 +77,14 @@ class SetpointSetter extends Component {
               name="tolerancePlus"
               validations="isNumeric"
               validationError="Only numbers please"
-              required
+              required={settings.toleranceEnabled}
               floatingLabelText={(settings.toleranceType === 'symmetric') ? "Tolerance" : "Positive Tolerance"}
               value={settings.tolerancePlus}
             />
             <FormsySelect
               style={{flex: '0 1 55%'}}
               disabled={!settings.toleranceEnabled}
+              required={settings.toleranceEnabled}
               name="toleranceType"
               floatingLabelText="Tolerance Type"
               value={settings.toleranceType}
@@ -90,15 +106,16 @@ class SetpointSetter extends Component {
               name="duration"
               validations="isNumeric"
               validationError="Only numbers please"
-              required
+              required={settings.durationEnabled}
               floatingLabelText="Time"
               value={settings.duration}
             />
             <FormsySelect
               style={{flex: '0 1 55%'}}
               disabled={!settings.durationEnabled}
+              required={settings.durationEnabled}
               name="durationType"
-              floatingLabelText="Duration Type"
+              floatingLabelText="Unit"
               value={settings.durationType}
             >
               <MenuItem value='seconds' primaryText='Seconds' />
@@ -114,7 +131,7 @@ class SetpointSetter extends Component {
 }
 
 SetpointSetter.propTypes = {
-  initialValues: React.PropTypes.string,
+  initialValues: React.PropTypes.object,
   unit: React.PropTypes.string,
 }
 

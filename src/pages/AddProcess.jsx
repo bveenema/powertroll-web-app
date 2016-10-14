@@ -1,5 +1,7 @@
 // Libs
 import React, {Component} from 'react';
+import { connect } from 'react-redux'
+import { updateAddProcessStep } from '../actions'
 import Measure from 'react-measure';
 import { has } from 'lodash';
 
@@ -22,8 +24,6 @@ class AddProcess extends Component {
   constructor(props){
     super(props)
     this.state = {
-      stepIndex: 0,
-      stepCompleted: [false],
       showLabels: false,
     };
     this.processInfo = {};
@@ -41,20 +41,18 @@ class AddProcess extends Component {
   }
 
   handleNext = () => {
-    const {stepIndex} = this.state;
+    const {stepIndex} = this.props;
     if(stepIndex < (this.numSteps - 1)){
-      this.setState({
-        stepIndex: stepIndex + 1
-      });
+      this.props.updateStep(stepIndex+1)
     }else{
       this.handleFinish();
     }
   };
 
   handlePrev = () => {
-    const {stepIndex} = this.state;
+    const {stepIndex} = this.props;
     if (stepIndex > 0) {
-      this.setState({stepIndex: stepIndex - 1});
+      this.props.updateStep(stepIndex-1);
     }
   };
 
@@ -69,7 +67,7 @@ class AddProcess extends Component {
   }
 
   checkFormCompleted() {
-    if(this.state.stepIndex === 0){
+    if(this.props.stepIndex === 0){
       if(this.processInfo.template && this.processInfo.template !== "Custom"){
         let checkKeys = ['name','device','sensor'];
         let isComplete = checkKeys.every((key) => has(this.processInfo, key))
@@ -94,7 +92,7 @@ class AddProcess extends Component {
   }
 
   renderStepActions(step) {
-    const {stepIndex} = this.state;
+    const {stepIndex} = this.props;
 
     return (
       <div style={{margin: '12px 0'}}>
@@ -120,7 +118,7 @@ class AddProcess extends Component {
   }
 
   render() {
-    const {stepIndex,showLabels} = this.state;
+    const {stepIndex,showLabels} = this.props;
 
     return (
       <Measure onMeasure={this.onMeasure}>
@@ -145,5 +143,21 @@ class AddProcess extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  console.log('state',state)
+  return {
+    stepIndex: state.addProcess.addProcessMeta.stepIndex,
+    stepCompleted: state.addProcess.addProcessMeta.stepCompleted,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateStep: (newStep) => dispatch(updateAddProcessStep(newStep))
+  }
+}
+
+AddProcess = connect(mapStateToProps,mapDispatchToProps)(AddProcess)
 
 export default AddProcess;

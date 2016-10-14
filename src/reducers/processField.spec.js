@@ -1,7 +1,7 @@
 import processField from './processField'
 
 describe('processField reducer', () => {
-  let initialState = {Form1:{name:'',enableCustom:false}}
+  let initialState = {Form1:{name:'',enableCustom:false},setpointSetter:{toleranceType: 'symmetric'}}
 
   it('should handle initial state', () => {
     expect(
@@ -24,7 +24,7 @@ describe('processField reducer', () => {
   })
 
   let prefilledState = {
-    Form1:{Dog: "Poodle"},
+    Form1:{Dog: "Poodle",name:"Ben"},
     Form2:{Cat: "Krumpit"}
   }
   it('should ADD_PROCESS_FIELD with filled array', () => {
@@ -37,7 +37,7 @@ describe('processField reducer', () => {
       })
     ).toEqual({
       ...prefilledState,
-      Form1:{Dog: "Poodle",id: "My Process"}
+      Form1:{...prefilledState.Form1,id: "My Process"}
     })
   })
 
@@ -50,7 +50,20 @@ describe('processField reducer', () => {
       })
     ).toEqual({
       ...initialState,
-      Form1: prefilledState.Form1,
+      Form1: {...initialState.Form1, ...prefilledState.Form1}
+    })
+  })
+
+  it('should handle UPDATE_FORM_VALIDITY', () => {
+    expect(
+      processField(initialState, {
+        type: 'UPDATE_FORM_VALIDITY',
+        formName: 'form1',
+        isValid: true
+      })
+    ).toEqual({
+      ...initialState,
+      Form1: {...initialState.Form1, isValid: true}
     })
   })
 
