@@ -39,11 +39,13 @@ class SetpointSetter extends Component {
   handleValid() {
     if(this.isValid) return
     this.isValid=true
+    this.props.updateValidity(this.isValid)
   }
 
   handleInvalid() {
     if(!this.isValid) return
     this.isValid=false
+    this.props.updateValidity(this.isValid)
   }
 
   render() {

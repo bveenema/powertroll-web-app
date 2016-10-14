@@ -1,7 +1,7 @@
 import addProcess from './addProcess'
 
 describe('addProcess reducer', () => {
-  let initialState = {addProcessMeta:{stepIndex:0,stepCompleted:[]}}
+  let initialState = {stepIndex:0,stepCompleted:[]}
 
   it('should handle initial state', () => {
     expect(
@@ -17,7 +17,7 @@ describe('addProcess reducer', () => {
       })
     ).toEqual({
       ...initialState,
-      addProcessMeta: {...initialState.addProcessMeta, stepIndex: 1}
+      stepIndex: 1
     })
   })
 })

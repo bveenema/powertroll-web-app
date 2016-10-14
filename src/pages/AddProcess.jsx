@@ -103,6 +103,7 @@ class AddProcess extends Component {
           primary={true}
           onTouchTap={this.handleNext}
           style={{marginRight: 12}}
+          disabled={!this.props.stepIsComplete[stepIndex]}
         />
         {step > 0 && (
           <FlatButton
@@ -118,7 +119,8 @@ class AddProcess extends Component {
   }
 
   render() {
-    const {stepIndex,showLabels} = this.props;
+    const {stepIndex} = this.props
+    const {showLabels} = this.state
 
     return (
       <Measure onMeasure={this.onMeasure}>
@@ -145,10 +147,11 @@ class AddProcess extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log('state',state)
+  let stepCompleted = []
+  stepCompleted[0] = state.processField.Form1.isValid
   return {
-    stepIndex: state.addProcess.addProcessMeta.stepIndex,
-    stepCompleted: state.addProcess.addProcessMeta.stepCompleted,
+    stepIndex: state.addProcess.stepIndex,
+    stepIsComplete: stepCompleted,
   }
 }
 

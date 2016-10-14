@@ -31,6 +31,8 @@ class AddProcess1 extends Component {
       animal: 'cat',
     }
     this.handleChange = this.handleChange.bind(this)
+    this.handleValid = this.handleValid.bind(this)
+    this.handleInvalid = this.handleInvalid.bind(this)
     this.checkTemplate = this.checkTemplate.bind(this)
   }
 
@@ -52,6 +54,19 @@ class AddProcess1 extends Component {
       return newState
     }
     return state
+  }
+
+  handleValid() {
+    if(this.isValid) return
+    console.log('form1 is valid')
+    this.isValid=true
+    this.props.updateValidity(this.isValid)
+  }
+
+  handleInvalid() {
+    if(!this.isValid) return
+    this.isValid=false
+    this.props.updateValidity(this.isValid)
   }
 
   handleChange(formValues, isChanged) {
@@ -80,6 +95,8 @@ class AddProcess1 extends Component {
     return(
       <Formsy.Form
         onChange={this.handleChange}
+        onValid={this.handleValid}
+        onInvalid={this.handleInvalid}
       >
         <div className="select-boxes" style={styles.templateSelect}>
           <FormsyText

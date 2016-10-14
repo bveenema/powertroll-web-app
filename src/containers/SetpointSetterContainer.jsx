@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { find } from 'lodash'
-import { updateProcessFields } from '../actions'
+import { updateProcessFields, updateFormValidity } from '../actions'
 
 import SetpointSetter from '../components/addProcess/SetpointSetter'
 
@@ -19,7 +19,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateStore: (formFields) => dispatch(updateProcessFields(formFields,'setpointSetter'))
+    updateStore: (formFields) => dispatch(updateProcessFields(formFields,'setpointSetter')),
+    updateValidity: (isValid) => dispatch(updateFormValidity('setpointSetter',isValid)),
   }
 }
 

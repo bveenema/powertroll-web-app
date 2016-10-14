@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { addProcessField, updateProcessFields } from '../actions';
+import { addProcessField, updateProcessFields, updateFormValidity } from '../actions';
 
 import AddProcess1 from '../components/addProcess/AddProcess1';
 
@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     updateStore: (formFields) => dispatch(updateProcessFields(formFields,'form1')),
+    updateValidity: (isValid) => dispatch(updateFormValidity('form1',isValid)),
     onChange: (id,value,formStep) => dispatch(addProcessField(id,value,formStep)),
   }
 }
