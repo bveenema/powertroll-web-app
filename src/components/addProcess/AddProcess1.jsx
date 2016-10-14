@@ -120,6 +120,7 @@ class AddProcess1 extends Component {
             name="device"
             floatingLabelText="Device"
             value={settings.device}
+            required
           >
             {deviceItems}
           </FormsySelect>
@@ -127,6 +128,7 @@ class AddProcess1 extends Component {
             name="sensor"
             floatingLabelText="Sensor"
             value={settings.sensor}
+            required
           >
             {sensorItems}
           </FormsySelect>
@@ -142,6 +144,7 @@ class AddProcess1 extends Component {
               name="loadType"
               floatingLabelText="Load Type"
               value={settings.loadType}
+              required={settings.enableCustom}
             >
               {loadTypeItems}
             </FormsySelect>
@@ -150,6 +153,7 @@ class AddProcess1 extends Component {
               name="controlType"
               floatingLabelText="Control Type"
               value={settings.controlType}
+              required={settings.enableCustom}
             >
               {controlTypeItems}
             </FormsySelect>
@@ -158,6 +162,7 @@ class AddProcess1 extends Component {
               name="controlMethod"
               floatingLabelText="Control Method"
               value={settings.controlMethod}
+              required={settings.enableCustom}
             >
               {controlMethodItems}
             </FormsySelect>
