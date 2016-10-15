@@ -34,3 +34,16 @@ describe('updateAddProcessStep', ()=> {
     })
   })
 })
+
+describe('addActionCreator', () => {
+  it('should create ADD_ACTION_CREATOR action', () => {
+    expect(actions.addActionCreator()).toEqual({
+      type: 'ADD_ACTION_CREATOR',
+      id: 0
+    })
+    expect(actions.addActionCreator()).toEqual({
+      type: 'ADD_ACTION_CREATOR',
+      id: 1
+    })
+  })
+})

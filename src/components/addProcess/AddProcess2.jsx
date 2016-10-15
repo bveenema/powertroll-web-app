@@ -1,15 +1,20 @@
 //libs
 import React from 'react';
 import { connect } from 'react-redux'
+import { addActionCreator } from '../../actions'
 
 // Components
-import SetpointSetterContainer from '../../containers/SetpointSetterContainer';
+import RaisedButton from 'material-ui/RaisedButton'
+import SetpointSetterContainer from '../../containers/SetpointSetterContainer'
+import ActionCreator from './ActionCreator'
 
-const AddProcess2 = (props) => {
+let AddProcess2 = (props) => {
   let modules = props.modules.map((module,index) => {
     switch (module) {
-      case 'SetpointSetter':
+      case 'setpoint':
         return <SetpointSetterContainer key={index}/>
+      case 'actionCreator':
+        return <ActionCreator key={index} />
       default:
         return <p key={index}>Oops! {module} module not implemented</p>
       }
@@ -17,6 +22,11 @@ const AddProcess2 = (props) => {
   return (
     <div className="add-process-2">
       {modules}
+      <RaisedButton
+        label="Add an Action"
+        primary
+        onClick={props.addAction}
+      />
     </div>
   );
 };
@@ -26,23 +36,28 @@ AddProcess2.propTypes = {
 }
 
 AddProcess2.defaultProps = {
-  modules: ['SetpointSetter'],
+  modules: ['setpoint'],
 }
 
 const mapStateToProps = (state) => {
-  let stepCompleted = []
-  stepCompleted[0] = state.processField.Form1.isValid
+  console.log('state', state.actionCreators)
+  let modulesToRender = []
+  modulesToRender[0] = state.processField.Form1.controlType
+  let startingIndex = modulesToRender.length
+  state.actionCreators.forEach((actionCreator,index) => {
+    modulesToRender[startingIndex+index] = 'actionCreator'
+  })
   return {
-    stepIndex: state.addProcess.stepIndex,
-    stepIsComplete: stepCompleted,
+    modules: modulesToRender
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateStep: (newStep) => dispatch(updateAddProcessStep(newStep))
+    addAction: () => {console.log('clicked'); dispatch(addActionCreator())}
   }
 }
+
 
 AddProcess2 = connect(mapStateToProps,mapDispatchToProps)(AddProcess2)
 

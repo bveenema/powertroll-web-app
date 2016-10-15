@@ -31,3 +31,12 @@ export const updateAddProcessStep = (newStep) => {
     newStep
   })
 }
+
+let actionCreatorId = 0
+export const addActionCreator = () => {
+  console.log('action ADD ACTION CREATOR')
+  return ({
+    type: 'ADD_ACTION_CREATOR',
+    id: actionCreatorId++,
+  })
+}
