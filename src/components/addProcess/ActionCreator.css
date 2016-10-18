@@ -1,0 +1,54 @@
+.ActionCreator {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+/*  Header  */
+  .ActionCreator .Header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    margin-bottom: 15px;
+    margin-top: -10px;
+  }
+
+  .ActionCreator .Header h1 {
+    font-size: 1.2em;
+    flex: 0 1 50%;
+  }
+
+  .ActionCreator .Header .HeaderText {
+    flex: 0 1 50%;
+  }
+
+/*  Content  */
+  .ActionCreator .Content {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin: 4px;
+  }
+
+  .ActionCreator .ContentWords {
+    text-align: right;
+    flex: 0 1 30%;
+    padding-bottom: 15px;
+  }
+
+  .ActionCreator .ContentSelect {
+    flex: 1 1 30%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+  }
+
+  .ActionCreator .ContentText {
+    flex: 1 1 20%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+  }
+
+/*  Remove Button  */
+  .ActionCreator .RemoveButton {
+
+  }
