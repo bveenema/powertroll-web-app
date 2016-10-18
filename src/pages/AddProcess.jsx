@@ -149,6 +149,12 @@ class AddProcess extends Component {
 const mapStateToProps = (state) => {
   let stepCompleted = []
   stepCompleted[0] = state.processField.Form1.isValid
+    let actionCreatorsValid = true;
+    state.actionCreators.forEach((actionCreator) => {
+      actionCreatorsValid = actionCreatorsValid && actionCreator.isValid
+    })
+  stepCompleted[1] = (state.processField.setpointSetter.isValid && actionCreatorsValid)
+
   return {
     stepIndex: state.addProcess.stepIndex,
     stepIsComplete: stepCompleted,
