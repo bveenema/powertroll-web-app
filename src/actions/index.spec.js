@@ -47,3 +47,32 @@ describe('addActionCreator', () => {
     })
   })
 })
+
+describe('removeActionCreator', () => {
+  it('should create REMOVE_ACTION_CREATOR action', () => {
+    expect(actions.removeActionCreator(1)).toEqual({
+      type: 'REMOVE_ACTION_CREATOR',
+      id: 1,
+    })
+  })
+})
+
+describe('updateActionCreator', () => {
+  it('should create UPDATE_ACTION_CREATOR action', () => {
+    expect(actions.updateActionCreator(1,testFields)).toEqual({
+      type: 'UPDATE_ACTION_CREATOR',
+      data: testFields,
+      id: 1
+    })
+  })
+})
+
+describe('updateActionValidity', () => {
+  it('should create UPDATE_ACTION_VALIDITY action', () => {
+    expect(actions.updateActionValidity(1, true)).toEqual({
+      type: 'UPDATE_ACTION_VALIDITY',
+      id: 1,
+      data: {isValid: true}
+    })
+  })
+})

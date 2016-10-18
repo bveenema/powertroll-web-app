@@ -16,7 +16,6 @@ export const updateProcessFields = (formFields, formStep) => {
 }
 
 export const updateFormValidity = (formName, isValid) => {
-  console.log('action UPDATE_FORM_VALIDITY',formName,isValid)
   return({
     type: 'UPDATE_FORM_VALIDITY',
     formName,
@@ -25,7 +24,6 @@ export const updateFormValidity = (formName, isValid) => {
 }
 
 export const updateAddProcessStep = (newStep) => {
-  console.log('action UPDATE ADD PROCESS STEP', newStep)
   return({
     type: 'UPDATE_ADD_PROCESS_STEP',
     newStep
@@ -34,9 +32,31 @@ export const updateAddProcessStep = (newStep) => {
 
 let actionCreatorId = 0
 export const addActionCreator = () => {
-  console.log('action ADD ACTION CREATOR')
   return ({
     type: 'ADD_ACTION_CREATOR',
     id: actionCreatorId++,
+  })
+}
+
+export const removeActionCreator = (id) => {
+  return ({
+    type: 'REMOVE_ACTION_CREATOR',
+    id
+  })
+}
+
+export const updateActionCreator = (id,data) => {
+  return ({
+    type: 'UPDATE_ACTION_CREATOR',
+    id,
+    data,
+  })
+}
+
+export const updateActionValidity = (id,isValid) => {
+  return ({
+    type: 'UPDATE_ACTION_VALIDITY',
+    id,
+    data: {isValid: isValid},
   })
 }

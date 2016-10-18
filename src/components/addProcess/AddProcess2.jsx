@@ -10,11 +10,13 @@ import ActionCreator from './ActionCreator'
 
 let AddProcess2 = (props) => {
   let modules = props.modules.map((module,index) => {
-    switch (module) {
+    switch (module.name) {
       case 'setpoint':
         return <SetpointSetterContainer key={index}/>
       case 'actionCreator':
-        return <ActionCreator key={index} />
+        return (
+          <ActionCreator key={index} id={module.id} />
+        )
       default:
         return <p key={index}>Oops! {module} module not implemented</p>
       }
@@ -40,12 +42,11 @@ AddProcess2.defaultProps = {
 }
 
 const mapStateToProps = (state) => {
-  console.log('state', state.actionCreators)
   let modulesToRender = []
-  modulesToRender[0] = state.processField.Form1.controlType
+  modulesToRender[0] = {name: state.processField.Form1.controlType}
   let startingIndex = modulesToRender.length
   state.actionCreators.forEach((actionCreator,index) => {
-    modulesToRender[startingIndex+index] = 'actionCreator'
+    modulesToRender[startingIndex+index] = {name: 'actionCreator', id: actionCreator.id}
   })
   return {
     modules: modulesToRender
