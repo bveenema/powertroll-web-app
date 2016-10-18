@@ -68,9 +68,9 @@ describe('updateActionCreator', () => {
 })
 
 describe('updateActionValidity', () => {
-  it('should create UPDATE_ACTION_VALIDITY action', () => {
+  it('should create UPDATE_ACTION_CREATOR action with data specifying isValid', () => {
     expect(actions.updateActionValidity(1, true)).toEqual({
-      type: 'UPDATE_ACTION_VALIDITY',
+      type: 'UPDATE_ACTION_CREATOR',
       id: 1,
       data: {isValid: true}
     })

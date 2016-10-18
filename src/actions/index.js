@@ -55,7 +55,7 @@ export const updateActionCreator = (id,data) => {
 
 export const updateActionValidity = (id,isValid) => {
   return ({
-    type: 'UPDATE_ACTION_VALIDITY',
+    type: 'UPDATE_ACTION_CREATOR',
     id,
     data: {isValid: isValid},
   })

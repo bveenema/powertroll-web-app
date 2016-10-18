@@ -4,6 +4,9 @@ import { connect } from 'react-redux'
 import { removeActionCreator, updateActionCreator, updateActionValidity } from '../../actions'
 import { findIndex, includes, capitalize } from 'lodash'
 
+// CSS
+import './ActionCreator.css'
+
 // Components
 import Paper from 'material-ui/Paper'
 import FlatButton from 'material-ui/FlatButton'
@@ -23,10 +26,6 @@ class ActionCreator extends Component {
     this.handleInvalid = this.handleInvalid.bind(this)
     this.renderActionSpecifier = this.renderActionSpecifier.bind(this)
     this.renderActionTime = this.renderActionTime.bind(this)
-  }
-
-  componentWillUnmount() {
-    this.props.updateStore(this.state.settings)
   }
 
   handleChange(formValues, isChanged) {
@@ -51,6 +50,7 @@ class ActionCreator extends Component {
     if(includes(['duty','setpoint'],actionType)) {
       return (
         <FormsyText
+          className="ContentText"
           name='actionValue'
           validations="isNumeric"
           validationError="Only numbers please"
@@ -67,6 +67,7 @@ class ActionCreator extends Component {
     if(includes(['seconds','minutes','hours','days'],durationType)) {
       return (
         <FormsyText
+          className="ContentText"
           name='durationValue'
           validations="isNumeric"
           validationError="Only numbers please"
@@ -81,25 +82,30 @@ class ActionCreator extends Component {
   render () {
     let { settings } = this.state
     return (
-      <Paper>
-        <h1>Add Action {this.props.id}</h1>
-        <Formsy.Form
-          onChange={this.handleChange}
-          onValid={this.handleValid}
-          onInvalid={this.handleInvalid}
-        >
-        <FormsyText
-          name='name'
-          validations="isWords"
-          validationError="No numbers"
-          required
-          floatingLabelText='Action Name'
-          hintText="Short and Concise"
-          value={settings.name}
-          fullWidth={true}
-        />
-          <span>Turn {this.props.deviceName}</span>
+      <Formsy.Form
+        onChange={this.handleChange}
+        onValid={this.handleValid}
+        onInvalid={this.handleInvalid}
+      >
+        <Paper className="ActionCreator">
+          <div className="Header">
+            <h1>Add Action</h1>
+            <FormsyText
+              className="HeaderText"
+              name='name'
+              validations="isWords"
+              validationError="No numbers"
+              required
+              floatingLabelText='Action Name'
+              hintText="Short and Concise"
+              value={settings.name}
+              fullWidth={true}
+            />
+          </div>
+          <div className="Content">
+            <span className="ContentWords">Turn {this.props.deviceName}</span>
             <FormsySelect
+              className="ContentSelect"
               name="actionType"
               floatingLabelText="Action"
               required
@@ -113,9 +119,12 @@ class ActionCreator extends Component {
               <MenuItem value='curve' primaryText='Follow Curve' />
             </FormsySelect>
             {this.renderActionSpecifier(settings.actionType)}
-          <span>for</span>
-            {this.renderActionTime(settings.durationType)}
+          </div>
+          <div className="Content">
+            <span className="ContentWords">for</span>
+              {this.renderActionTime(settings.durationType)}
             <FormsySelect
+              className="ContentSelect"
               name="durationType"
               floatingLabelText="Time"
               required
@@ -127,19 +136,20 @@ class ActionCreator extends Component {
               <MenuItem value='hours' primaryText='Hours' />
               <MenuItem value='days' primaryText='Days' />
             </FormsySelect>
-        </Formsy.Form>
-        <FlatButton
-          label="Remove Action"
-          onClick={this.props.removeAction}
-        />
-      </Paper>
+          </div>
+          <FlatButton
+            className="RemoveButton"
+            label="Remove Action"
+            onClick={this.props.removeAction}
+          />
+        </Paper>
+      </Formsy.Form>
     )
   }
 
 }
 
 const mapStateToProps  = (state, ownProps) => {
-  console.log('state',state.actionCreators)
   let index = findIndex(state.actionCreators, {'id': ownProps.id})
   return{
     deviceName: state.processField.Form1.device || 'device',
