@@ -18,6 +18,7 @@ import FlatButton from 'material-ui/FlatButton';
 // Components
 import AddProcess1Container from '../containers/AddProcess1Container';
 import AddProcess2 from '../components/addProcess/AddProcess2';
+import ProcessReview from '../components/addProcess/ProcessReview'
 
 
 class AddProcess extends Component {
@@ -86,6 +87,8 @@ class AddProcess extends Component {
         return (<AddProcess1Container />);
       case 1:
         return (<AddProcess2 />);
+      case 2:
+        return (<ProcessReview />)
       default:
         return 'Somethings on Fire! Go Back.. now!!!';
     }
